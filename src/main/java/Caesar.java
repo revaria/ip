@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Caesar {
-    
+
     public static void main(String[] args) {
 
         final String byeString = "bye";
@@ -28,12 +28,12 @@ public class Caesar {
         System.out.println("__________________________________________________________");
 
         // Input + Output loop
-        while(isRunning) {
+        while (isRunning) {
             line = in.nextLine().trim(); // Get user input and remove leading/trailing white spaces
             if (line.isEmpty()) { // Skip empty inputs
                 continue;
             }
-            
+
             // Process user input into two parts
             String[] parts = line.split(" ", 2);
             String command = parts[0].toLowerCase();
@@ -47,7 +47,7 @@ public class Caesar {
                 case listString: // Print the list of all tasks
                     int size = Task.getTaskCount();
                     for (int i = 0; i < size; i++) {
-                        System.out.println((i+1) + ": " + myTasks.get(i).toString());
+                        System.out.println((i + 1) + ": " + myTasks.get(i).toString());
                     }
                     break;
                 case markString: // Mark task as complete
@@ -76,12 +76,12 @@ public class Caesar {
                     break;
                 default: // Add new task
                     myTasks.add(new Task(line));
-                    System.out.println("added: " + line); 
+                    System.out.println("added: " + line);
                     break;
             }
 
             System.out.println("What else shall we conquer today?");
-            System.out.println("__________________________________________________________");                             
+            System.out.println("__________________________________________________________");
         }
         in.close();
 
