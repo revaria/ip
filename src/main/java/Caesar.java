@@ -19,6 +19,7 @@ public class Caesar {
             }
             isRunning = Parser.handleCommand(line, myTasks);
         }
+
         in.close();
     }
 }

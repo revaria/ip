@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javax.net.ssl.StandardConstants;
-
 public class Parser {
     public static boolean handleCommand(String line, ArrayList<Task> myTasks) {
         // Process user input into two parts
@@ -37,6 +35,7 @@ public class Parser {
             default:
                 System.out.println("I do not understand that command, Brutus. Are you plotting something?");
         }
+
         nextCommandPrompt();
         return true;
     }
@@ -50,6 +49,7 @@ public class Parser {
             System.out.println("The Caesar Files are empty!");
             return;
         }
+
         System.out.println("The Caesar Files are as follows:");
         for (int i = 0; i < myTasks.size(); i++) {
             System.out.println("    " + (i + 1) + ": " + myTasks.get(i).toString());
@@ -69,16 +69,20 @@ public class Parser {
             System.out.println("Brutus, the Senate cannot update a nameless task!");
             return;
         }
+
         try {
             int idx = Integer.parseInt(argument) - 1;
             Task t = myTasks.get(idx);
+
             if (isMark) {
                 t.markAsDone();
             } else {
                 t.markAsUndone();
             }
+
             System.out.println(isMark ? "Marking:" : "Unmarking:");
             System.out.println("    " + (idx + 1) + ": " + t);
+
         } catch (NumberFormatException e) {
             System.out.println("Mark Antony, that's not a valid number!");
         } catch (IndexOutOfBoundsException e) {
@@ -93,6 +97,7 @@ public class Parser {
             System.out.println("Brutus, the Senate cannot record a nameless task!");
             return;
         }
+
         try {
             myTasks.add(new Todo(argument));
             addTaskMessage(myTasks);
@@ -118,6 +123,7 @@ public class Parser {
 
             myTasks.add(new Deadline(description, date));
             addTaskMessage(myTasks);
+
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Brutus, use the format: deadline [task] /by [date].");
         } catch (Exception e) {
@@ -144,6 +150,7 @@ public class Parser {
 
             myTasks.add(new Event(description, startDate, endDate));
             addTaskMessage(myTasks);
+
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Brutus, use the format: event [task] /from [date] /to [date].");
         } catch (Exception e) {

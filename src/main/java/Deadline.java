@@ -8,7 +8,6 @@ public class Deadline extends Task {
 
     public void setDate(String date) {
         this.date = date;
-        // what if date is null?
     }
 
     public String getDate() {
