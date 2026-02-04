@@ -10,6 +10,6 @@ public class Greeting {
         // Greeting Message
         System.out.println("Hello Brutus, I'm\n" + logo);
         System.out.println("What shall we conquer today?");
-        System.out.println("__________________________________________________________");
+        System.out.println("==========================================================");
     }
 }
