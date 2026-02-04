@@ -9,6 +9,10 @@ public class Task {
         taskCount++;
     }
 
+    public boolean getIsCompleted() {
+        return isCompleted;
+    }
+
     public static int getTaskCount() {
         return taskCount;
     }
@@ -16,11 +20,13 @@ public class Task {
     public void markAsDone() {
         this.isCompleted = true;
     }
+
     public void markAsUndone() {
         this.isCompleted = false;
     }
+
     public String toString() {
         String status = isCompleted ? "[X] " : "[ ] ";
-        return status + description; 
+        return status + description;
     }
 }
