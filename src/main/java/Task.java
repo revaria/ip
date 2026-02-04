@@ -25,6 +25,10 @@ public class Task {
         this.isCompleted = false;
     }
 
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
     public String toString() {
         String status = isCompleted ? "[X] " : "[ ] ";
         return status + description;
