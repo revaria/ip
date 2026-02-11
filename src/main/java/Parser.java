@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class Parser {
     public static boolean handleCommand(String line, ArrayList<Task> myTasks) {
-        // Process user input into two parts
         String[] parts = line.split(" ", 2);
         String command = parts[0].toLowerCase();
         String argument = (parts.length > 1) ? parts[1].trim() : "";
@@ -106,9 +105,9 @@ public class Parser {
 
     public static void addDeadline(ArrayList<Task> myTasks, String argument) {
         try {
-            String[] part = argument.split("/by", 2);
-            String description = part[0].trim();
-            String date = part[1].trim();
+            String[] parts = argument.split("/by", 2);
+            String description = parts[0].trim();
+            String date = parts[1].trim();
 
             if (description.isBlank()) {
                 System.out.println("Brutus, the Senate cannot record a nameless task!");
@@ -131,9 +130,9 @@ public class Parser {
 
     public static void addEvent(ArrayList<Task> myTasks, String argument) {
         try {
-            String[] part = argument.split("/from", 2);
-            String description = part[0].trim();
-            String[] fromToString = part[1].split("/to", 2);
+            String[] parts = argument.split("/from", 2);
+            String description = parts[0].trim();
+            String[] fromToString = parts[1].split("/to", 2);
             String startDate = fromToString[0].trim();
             String endDate = fromToString[1].trim();
 
