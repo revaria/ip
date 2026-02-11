@@ -8,7 +8,6 @@ public class Parser {
         String argument = (parts.length > 1) ? parts[1].trim() : "";
 
         System.out.println("__________________________________________________________");
-
         switch (command) {
             case "bye":
                 handleBye();
@@ -24,7 +23,6 @@ public class Parser {
                 break;
             case "todo":
                 addTodo(myTasks, argument);
-                ;
                 break;
             case "deadline":
                 addDeadline(myTasks, argument);
