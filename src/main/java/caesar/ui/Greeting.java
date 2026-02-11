@@ -1,5 +1,7 @@
+package caesar.ui;
+
 public class Greeting {
-    public static void Greet() {
+    public static void greet() {
         String logo = " _____ \n"
                 + "/  ___\\ _____  _____  _____  __ __  _____ \n"
                 + "| |    /     |/ / _ \\/ /___\\/     |/  ___\\ \n"

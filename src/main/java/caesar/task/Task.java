@@ -1,3 +1,5 @@
+package caesar.task;
+
 public class Task {
     private boolean isCompleted;
     private String description;

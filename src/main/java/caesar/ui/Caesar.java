@@ -1,10 +1,15 @@
+package caesar.ui;
+
+import caesar.task.*;
+import caesar.parser.*;
+import caesar.exception.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Caesar {
 
     public static void main(String[] args) {
-        Greeting.Greet();
+        Greeting.greet();
 
         ArrayList<Task> myTasks = new ArrayList<>();
         String line;
