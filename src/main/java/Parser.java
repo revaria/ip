@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 public class Parser {
-    public static boolean handleCommand(String line, ArrayList<Task> myTasks) {
+    public static boolean handleCommand(String line,
+            ArrayList<Task> myTasks) throws CaesarException {
         String[] parts = line.split(" ", 2);
         String command = parts[0].toLowerCase();
         String argument = (parts.length > 1) ? parts[1].trim() : "";
@@ -30,7 +31,8 @@ public class Parser {
                 addEvent(myTasks, argument);
                 break;
             default:
-                System.out.println("I do not understand that command, Brutus. Are you plotting something?");
+                throw new CaesarException(
+                        "I do not understand that command, Brutus. Are you plotting something?");
         }
 
         nextCommandPrompt();
@@ -53,106 +55,112 @@ public class Parser {
         }
     }
 
-    public static void handleMark(ArrayList<Task> myTasks, String argument) {
+    public static void handleMark(
+            ArrayList<Task> myTasks,
+            String argument) throws CaesarException {
         updateTaskStatus(myTasks, argument, true);
     }
 
-    public static void handleUnmark(ArrayList<Task> myTasks, String argument) {
+    public static void handleUnmark(
+            ArrayList<Task> myTasks,
+            String argument) throws CaesarException {
         updateTaskStatus(myTasks, argument, false);
     }
 
-    private static void updateTaskStatus(ArrayList<Task> myTasks, String argument, boolean isMark) {
+    private static void updateTaskStatus(
+            ArrayList<Task> myTasks,
+            String argument,
+            boolean isMark) throws CaesarException {
         if (argument.isBlank()) {
-            System.out.println("Brutus, the Senate cannot update a nameless task!");
-            return;
+            throw new CaesarException("Brutus, the Senate cannot update a nameless task!");
         }
 
+        int idx;
         try {
-            int idx = Integer.parseInt(argument) - 1;
-            Task t = myTasks.get(idx);
-
-            if (isMark) {
-                t.markAsDone();
-            } else {
-                t.markAsUndone();
-            }
-
-            System.out.println(isMark ? "Marking:" : "Unmarking:");
-            System.out.println("    " + (idx + 1) + ": " + t);
-
+            idx = Integer.parseInt(argument) - 1;
         } catch (NumberFormatException e) {
-            System.out.println("Mark Antony, that's not a valid number!");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Mark Antony, that task doesn't exist in our records! Check your list!");
-        } catch (Exception e) {
-            System.out.println("An unknown error has infiltrated the Senate!");
+            throw new CaesarException("Mark Antony, that's not a valid number!");
         }
+
+        if (idx < 0 || idx >= myTasks.size()) {
+            throw new CaesarException("Mark Antony, that task doesn't exist in our records! Check your list!");
+        }
+
+        Task t = myTasks.get(idx);
+
+        if (isMark) {
+            t.markAsDone();
+        } else {
+            t.markAsUndone();
+        }
+
+        System.out.println(isMark ? "Marking:" : "Unmarking:");
+        System.out.println(" " + (idx + 1) + ": " + t);
     }
 
-    public static void addTodo(ArrayList<Task> myTasks, String argument) {
+    public static void addTodo(
+            ArrayList<Task> myTasks,
+            String argument) throws CaesarException {
         if (argument.isBlank()) {
-            System.out.println("Brutus, the Senate cannot record a nameless task!");
-            return;
+            throw new CaesarException("Brutus, the Senate cannot record a nameless task!");
         }
-
-        try {
-            myTasks.add(new Todo(argument));
-            addTaskMessage(myTasks);
-        } catch (Exception e) {
-            System.out.println("An unknown error has infiltrated the Senate!");
-        }
+        myTasks.add(new Todo(argument));
+        addTaskMessage(myTasks);
     }
 
-    public static void addDeadline(ArrayList<Task> myTasks, String argument) {
-        try {
-            String[] parts = argument.split("/by", 2);
-            String description = parts[0].trim();
-            String date = parts[1].trim();
-
-            if (description.isBlank()) {
-                System.out.println("Brutus, the Senate cannot record a nameless task!");
-                return;
-            }
-            if (date.isBlank()) {
-                System.out.println("Brutus, a deadline without a time is just a wish!");
-                return;
-            }
-
-            myTasks.add(new Deadline(description, date));
-            addTaskMessage(myTasks);
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Brutus, use the format: deadline [task] /by [date].");
-        } catch (Exception e) {
-            System.out.println("An unknown error has infiltrated the Senate!");
+    public static void addDeadline(
+            ArrayList<Task> myTasks,
+            String argument) throws CaesarException {
+        if (argument.isBlank()) {
+            throw new CaesarException("Brutus, the Senate cannot record a nameless task!");
         }
+        if (!argument.contains("/by")) {
+            throw new CaesarException("Brutus, use the format: deadline [task] /by [date].");
+        }
+        String[] parts = argument.split("/by", 2);
+        String description = parts[0].trim();
+        String date = parts[1].trim();
+
+        if (description.isBlank()) {
+            throw new CaesarException("Brutus, the Senate cannot record a nameless task!");
+        }
+        if (date.isBlank()) {
+            throw new CaesarException("Brutus, a deadline without a time is just a wish!");
+        }
+        myTasks.add(new Deadline(description, date));
+        addTaskMessage(myTasks);
     }
 
-    public static void addEvent(ArrayList<Task> myTasks, String argument) {
-        try {
-            String[] parts = argument.split("/from", 2);
-            String description = parts[0].trim();
-            String[] fromToString = parts[1].split("/to", 2);
-            String startDate = fromToString[0].trim();
-            String endDate = fromToString[1].trim();
-
-            if (description.isBlank()) {
-                System.out.println("Brutus, the Senate cannot record a nameless task!");
-                return;
-            }
-            if (startDate.isBlank() || endDate.isBlank()) {
-                System.out.println("Brutus, an event without a start or an end is just a wish!");
-                return;
-            }
-
-            myTasks.add(new Event(description, startDate, endDate));
-            addTaskMessage(myTasks);
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Brutus, use the format: event [task] /from [date] /to [date].");
-        } catch (Exception e) {
-            System.out.println("An unknown error has infiltrated the Senate!");
+    public static void addEvent(
+            ArrayList<Task> myTasks,
+            String argument) throws CaesarException {
+        if (argument.isBlank()) {
+            throw new CaesarException("Brutus, use the format: event [task] /from [date] /to [date]");
         }
+        if (!argument.contains("/from")) {
+            throw new CaesarException("Brutus, the event needs a start time! Use /from.");
+        }
+
+        String[] parts = argument.split("/from", 2);
+        String description = parts[0].trim();
+
+        if (description.isBlank()) {
+            throw new CaesarException("Brutus, the Senate cannot record a nameless task!");
+        }
+        if (!parts[1].contains("/to")) {
+            throw new CaesarException("Brutus, the event needs an end time! Use /to.");
+        }
+
+        String[] fromToString = parts[1].split("/to", 2);
+        String startDate = fromToString[0].trim();
+        String endDate = fromToString[1].trim();
+
+        if (startDate.isBlank() || endDate.isBlank()) {
+            throw new CaesarException("Brutus, an event without a start or an end is just a wish!");
+        }
+
+        myTasks.add(new Event(description, startDate, endDate));
+        addTaskMessage(myTasks);
     }
 
     public static void addTaskMessage(ArrayList<Task> myTasks) {
@@ -164,6 +172,5 @@ public class Parser {
 
     public static void nextCommandPrompt() {
         System.out.println("What else shall we conquer today?");
-        System.out.println("__________________________________________________________");
     }
 }

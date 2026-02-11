@@ -13,11 +13,21 @@ public class Caesar {
 
         // Input + Output loop
         while (isRunning) {
-            line = in.nextLine().trim(); // Get user input and remove leading/trailing white spaces
-            if (line.isBlank()) { // Skip empty inputs
-                continue;
+            try {
+                line = in.nextLine().trim(); // Get user input and remove leading/trailing white spaces
+                if (line.isBlank()) { // Skip empty inputs
+                    continue;
+                }
+                isRunning = Parser.handleCommand(line, myTasks);
+            } catch (CaesarException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("An unknown error has infiltrated the Senate: " + e.getMessage());
+            } finally {
+                if (isRunning) {
+                    System.out.println("__________________________________________________________");
+                }
             }
-            isRunning = Parser.handleCommand(line, myTasks);
         }
 
         in.close();
