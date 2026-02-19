@@ -12,7 +12,10 @@ public class Caesar {
     public static void main(String[] args) {
         Greeting.greet();
 
-        Storage storage = new Storage("data/caesar.txt");
+        String home = System.getProperty("user.home");
+        java.nio.file.Path path = java.nio.file.Paths.get(home, "data", "caesar.txt");
+
+        Storage storage = new Storage(path.toString());
         ArrayList<Task> myTasks;
         // ArrayList<Task> myTasks = new ArrayList<>();
         String line;
