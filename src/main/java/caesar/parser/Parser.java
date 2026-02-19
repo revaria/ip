@@ -34,6 +34,9 @@ public class Parser {
             case "event":
                 addEvent(myTasks, argument);
                 break;
+            case "delete":
+                deleteTask(myTasks, argument);
+                break;
             default:
                 throw new CaesarException(
                         "I do not understand that command, Brutus. Are you plotting something?");
@@ -176,5 +179,27 @@ public class Parser {
 
     public static void nextCommandPrompt() {
         System.out.println("What else shall we conquer today?");
+    }
+
+    private static void deleteTask(
+            ArrayList<Task> myTasks,
+            String argument) throws CaesarException {
+        if (argument.isBlank()) {
+            throw new CaesarException("Brutus, the Senate cannot delete a nameless task!");
+        }
+
+        int idx;
+        try {
+            idx = Integer.parseInt(argument) - 1;
+        } catch (NumberFormatException e) {
+            throw new CaesarException("Mark Antony, that's not a valid number!");
+        }
+
+        if (idx < 0 || idx >= myTasks.size()) {
+            throw new CaesarException("Mark Antony, that task doesn't exist in our records! Check your list!");
+        }
+        System.out.println("The Senate has voted to destroy this evil:");
+        System.out.println("    " + myTasks.get(idx));
+        myTasks.remove(idx);
     }
 }
