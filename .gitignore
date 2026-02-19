@@ -6,6 +6,9 @@
 /out/
 /*.iml
 
+# Data directory
+data/
+
 # Gradle build files
 /.gradle/
 /build/

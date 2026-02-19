@@ -2,11 +2,14 @@ package caesar.parser;
 
 import caesar.task.*;
 import caesar.exception.*;
+import caesar.storage.*;
+
 import java.util.ArrayList;
 
 public class Parser {
     public static boolean handleCommand(String line,
-            ArrayList<Task> myTasks) throws CaesarException {
+            ArrayList<Task> myTasks,
+            Storage storage) throws CaesarException {
         String[] parts = line.split(" ", 2);
         String command = parts[0].toLowerCase();
         String argument = (parts.length > 1) ? parts[1].trim() : "";
@@ -42,6 +45,7 @@ public class Parser {
                         "I do not understand that command, Brutus. Are you plotting something?");
         }
 
+        storage.save(myTasks);
         nextCommandPrompt();
         return true;
     }
