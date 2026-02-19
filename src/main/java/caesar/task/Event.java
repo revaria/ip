@@ -32,4 +32,13 @@ public class Event extends Task {
                 + getStartDate() + " to: "
                 + getEndDate() + ")";
     }
+
+    @Override
+    public String toSaveFormat() {
+        return "E"
+                + " | " + (getIsCompleted() ? "1" : "0")
+                + " | " + getDescription()
+                + " | " + getStartDate()
+                + " | " + getEndDate();
+    }
 }

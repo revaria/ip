@@ -1,6 +1,6 @@
 package caesar.task;
 
-public class Task {
+public abstract class Task {
     private boolean isCompleted;
     private String description;
     private static int taskCount = 0;
@@ -13,6 +13,10 @@ public class Task {
 
     public boolean getIsCompleted() {
         return isCompleted;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public static int getTaskCount() {
@@ -35,4 +39,6 @@ public class Task {
         String status = isCompleted ? "[X] " : "[ ] ";
         return status + description;
     }
+
+    public abstract String toSaveFormat();
 }
