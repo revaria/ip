@@ -34,6 +34,9 @@ public class Parser {
             case "event":
                 addEvent(myTasks, argument);
                 break;
+            case "delete":
+                deleteTask(myTasks, argument);
+                break;
             default:
                 throw new CaesarException(
                         "I do not understand that command, Brutus. Are you plotting something?");
@@ -43,11 +46,11 @@ public class Parser {
         return true;
     }
 
-    public static void handleBye() {
+    private static void handleBye() {
         System.out.println("Goodbye Brutus, the stars speak of our inevitable reunion.");
     }
 
-    public static void handleList(ArrayList<Task> myTasks) {
+    private static void handleList(ArrayList<Task> myTasks) {
         if (myTasks.isEmpty()) {
             System.out.println("The Caesar Files are empty!");
             return;
@@ -59,13 +62,13 @@ public class Parser {
         }
     }
 
-    public static void handleMark(
+    private static void handleMark(
             ArrayList<Task> myTasks,
             String argument) throws CaesarException {
         updateTaskStatus(myTasks, argument, true);
     }
 
-    public static void handleUnmark(
+    private static void handleUnmark(
             ArrayList<Task> myTasks,
             String argument) throws CaesarException {
         updateTaskStatus(myTasks, argument, false);
@@ -102,7 +105,7 @@ public class Parser {
         System.out.println(" " + (idx + 1) + ": " + t);
     }
 
-    public static void addTodo(
+    private static void addTodo(
             ArrayList<Task> myTasks,
             String argument) throws CaesarException {
         if (argument.isBlank()) {
@@ -112,7 +115,7 @@ public class Parser {
         addTaskMessage(myTasks);
     }
 
-    public static void addDeadline(
+    private static void addDeadline(
             ArrayList<Task> myTasks,
             String argument) throws CaesarException {
         if (argument.isBlank()) {
@@ -135,7 +138,7 @@ public class Parser {
         addTaskMessage(myTasks);
     }
 
-    public static void addEvent(
+    private static void addEvent(
             ArrayList<Task> myTasks,
             String argument) throws CaesarException {
         if (argument.isBlank()) {
@@ -167,14 +170,36 @@ public class Parser {
         addTaskMessage(myTasks);
     }
 
-    public static void addTaskMessage(ArrayList<Task> myTasks) {
+    private static void addTaskMessage(ArrayList<Task> myTasks) {
         Task t = myTasks.get(myTasks.size() - 1);
         System.out.println("The Senate acknowledges this task:");
         System.out.println("    " + t);
         System.out.println("Now you have " + myTasks.size() + " task(s) in the records.");
     }
 
-    public static void nextCommandPrompt() {
+    private static void nextCommandPrompt() {
         System.out.println("What else shall we conquer today?");
+    }
+
+    private static void deleteTask(
+            ArrayList<Task> myTasks,
+            String argument) throws CaesarException {
+        if (argument.isBlank()) {
+            throw new CaesarException("Brutus, the Senate cannot delete a nameless task!");
+        }
+
+        int idx;
+        try {
+            idx = Integer.parseInt(argument) - 1;
+        } catch (NumberFormatException e) {
+            throw new CaesarException("Mark Antony, that's not a valid number!");
+        }
+
+        if (idx < 0 || idx >= myTasks.size()) {
+            throw new CaesarException("Mark Antony, that task doesn't exist in our records! Check your list!");
+        }
+        System.out.println("The Senate has voted to destroy this evil:");
+        System.out.println("    " + myTasks.get(idx));
+        myTasks.remove(idx);
     }
 }
