@@ -2,8 +2,9 @@ package caesar.parser;
 
 import caesar.task.*;
 import caesar.tasklist.TaskList;
-import caesar.exception.*;
-import caesar.storage.*;
+import caesar.exception.CaesarException;
+import caesar.storage.Storage;
+import caesar.ui.Ui;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,8 +14,9 @@ import java.time.format.DateTimeParseException;
 public class Parser {
     public static boolean handleCommand(String line,
             TaskList myTasks,
-            Storage storage) throws CaesarException {
-        String[] parts = line.split(" ", 2);
+            Storage storage,
+            Ui ui) throws CaesarException {
+        String[] parts = line.split("\\s+", 2);
         String command = parts[0].toLowerCase();
         String argument = (parts.length > 1) ? parts[1].trim() : "";
 
@@ -43,6 +45,9 @@ public class Parser {
                 break;
             case "delete":
                 deleteTask(myTasks, argument);
+                break;
+            case "find":
+                findTask(myTasks, argument, ui);
                 break;
             default:
                 throw new CaesarException(
@@ -214,6 +219,18 @@ public class Parser {
         System.out.println("The Senate has voted to destroy this evil:");
         System.out.println("    " + myTasks.getTask(idx));
         myTasks.deleteTask(idx);
+    }
+
+    public static void findTask(
+            TaskList myTasks,
+            String argument,
+            Ui ui) throws CaesarException {
+        if (argument.isBlank()) {
+            throw new CaesarException("Brutus, what shall I search for?");
+        }
+        String[] keywords = argument.split("\\s+");
+        TaskList foundTasks = myTasks.findTasks(keywords);
+        ui.showSearchResults(foundTasks);
     }
 
     public static LocalDateTime parseFlexibleDate(String input) throws CaesarException {
