@@ -15,8 +15,10 @@ import java.util.ArrayList;
 public class Storage {
     private File file;
 
-    public Storage(String filepath) {
-        this.file = new File(filepath);
+    public Storage() {
+        String home = System.getProperty("user.home");
+        java.nio.file.Path filepath = java.nio.file.Paths.get(home, "data", "caesar.txt");
+        this.file = new File(filepath.toString());
     }
 
     public void save(ArrayList<Task> tasks) throws CaesarException {

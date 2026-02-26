@@ -1,27 +1,20 @@
-package caesar.ui;
+package caesar;
 
 import caesar.task.*;
+import caesar.ui.*;
 import caesar.parser.*;
 import caesar.exception.*;
 import caesar.storage.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Caesar {
 
     public static void main(String[] args) {
-        Greeting.greet();
+        Ui ui = new Ui();
+        ui.greet();
 
-        String home = System.getProperty("user.home");
-        java.nio.file.Path path = java.nio.file.Paths.get(home, "data", "caesar.txt");
-
-        Storage storage = new Storage(path.toString());
         ArrayList<Task> myTasks;
-        // ArrayList<Task> myTasks = new ArrayList<>();
-        String line;
-        Scanner in = new Scanner(System.in);
-        boolean isRunning = true;
-
+        Storage storage = new Storage();
         try {
             myTasks = storage.load();
         } catch (CaesarException e) {
@@ -29,11 +22,11 @@ public class Caesar {
             myTasks = new ArrayList<>();
         }
 
-        // Input + Output loop
+        boolean isRunning = true;
         while (isRunning) {
             try {
-                line = in.nextLine().trim(); // Get user input and remove leading/trailing white spaces
-                if (line.isBlank()) { // Skip empty inputs
+                String line = ui.readInput();
+                if (line.isBlank()) {
                     continue;
                 }
                 isRunning = Parser.handleCommand(line, myTasks, storage);
@@ -42,12 +35,10 @@ public class Caesar {
             } catch (Exception e) {
                 System.out.println("An unknown error has infiltrated the Senate: " + e.getMessage());
             } finally {
-                if (isRunning) {
-                    System.out.println("__________________________________________________________");
-                }
+                ui.printLineDivider();
             }
         }
 
-        in.close();
+        ui.close();
     }
 }
