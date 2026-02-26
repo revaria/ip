@@ -1,19 +1,22 @@
 package caesar.task;
 
-public class Deadline extends Task {
-    private String date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Deadline(String description, String date) {
+public class Deadline extends Task {
+    private LocalDateTime date;
+
+    public Deadline(String description, LocalDateTime date) {
         super(description);
         setDate(date);
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
     public String getDate() {
-        return date;
+        return date.format(DateTimeFormatter.ofPattern("MMM d yyyy h:mm a"));
     }
 
     @Override
@@ -26,6 +29,6 @@ public class Deadline extends Task {
         return "D"
                 + " | " + (getIsCompleted() ? "1" : "0")
                 + " | " + getDescription()
-                + " | " + getDate();
+                + " | " + date;
     }
 }

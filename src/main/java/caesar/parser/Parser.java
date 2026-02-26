@@ -4,6 +4,10 @@ import caesar.task.*;
 import caesar.exception.*;
 import caesar.storage.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class Parser {
@@ -138,7 +142,8 @@ public class Parser {
         if (date.isBlank()) {
             throw new CaesarException("Brutus, a deadline without a time is just a wish!");
         }
-        myTasks.add(new Deadline(description, date));
+        LocalDateTime by = parseFlexibleDate(date);
+        myTasks.add(new Deadline(description, by));
         addTaskMessage(myTasks);
     }
 
@@ -169,8 +174,12 @@ public class Parser {
         if (startDate.isBlank() || endDate.isBlank()) {
             throw new CaesarException("Brutus, an event without a start or an end is just a wish!");
         }
-
-        myTasks.add(new Event(description, startDate, endDate));
+        LocalDateTime from = parseFlexibleDate(startDate);
+        LocalDateTime to = parseFlexibleDate(endDate);
+        if (to.isBefore(from)) {
+            throw new CaesarException("Brutus, time flows forward! The end time cannot be before the start time.");
+        }
+        myTasks.add(new Event(description, from, to));
         addTaskMessage(myTasks);
     }
 
@@ -205,5 +214,23 @@ public class Parser {
         System.out.println("The Senate has voted to destroy this evil:");
         System.out.println("    " + myTasks.get(idx));
         myTasks.remove(idx);
+    }
+
+    public static LocalDateTime parseFlexibleDate(String input) throws CaesarException {
+        String[] patterns = { "yyyy-MM-dd HHmm", "dd/MM/yyyy HHmm", "yyyy-MM-dd", "dd/MM/yyyy" };
+
+        for (String pattern : patterns) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+                // If the pattern doesn't include time, use default time
+                if (!pattern.contains("HHmm")) {
+                    return LocalDate.parse(input, formatter).atStartOfDay();
+                }
+                return LocalDateTime.parse(input, formatter);
+            } catch (DateTimeParseException ignored) {
+                // Keep trying other patterns
+            }
+        }
+        throw new CaesarException("Use yyyy-MM-dd HHmm, dd/MM/yyyy HHmm, yyyy-MM-dd or dd/MM/yyyy.");
     }
 }

@@ -1,29 +1,32 @@
 package caesar.task;
 
-public class Event extends Task {
-    private String startDate;
-    private String endDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description, String startDate, String endDate) {
+public class Event extends Task {
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+
+    public Event(String description, LocalDateTime startDate, LocalDateTime endDate) {
         super(description);
         setStartDate(startDate);
         setEndDate(endDate);
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
     public String getStartDate() {
-        return startDate;
+        return startDate.format(DateTimeFormatter.ofPattern("MMM d yyyy h:mm a"));
     }
 
     public String getEndDate() {
-        return endDate;
+        return endDate.format(DateTimeFormatter.ofPattern("MMM d yyyy h:mm a"));
     }
 
     @Override
@@ -38,7 +41,7 @@ public class Event extends Task {
         return "E"
                 + " | " + (getIsCompleted() ? "1" : "0")
                 + " | " + getDescription()
-                + " | " + getStartDate()
-                + " | " + getEndDate();
+                + " | " + startDate
+                + " | " + endDate;
     }
 }

@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+
 import caesar.exception.CaesarException;
 import caesar.task.Deadline;
 import caesar.task.Event;
@@ -16,7 +19,7 @@ public class Storage {
     private File file;
 
     public Storage() {
-        String home = System.getProperty("user.home");
+        String home = System.getProperty("user.dir");
         java.nio.file.Path filepath = java.nio.file.Paths.get(home, "data", "caesar.txt");
         this.file = new File(filepath.toString());
     }
@@ -63,30 +66,37 @@ public class Storage {
         return loadedTasks;
     }
 
-    private Task parseTaskFromLine(String line) {
-        String[] parts = line.split(" \\| ");
-        String type = parts[0];
-        boolean isDone = parts[1].equals("1");
-        String description = parts[2];
+    private Task parseTaskFromLine(String line) throws CaesarException {
+        try {
+            String[] parts = line.split(" \\| ");
+            String type = parts[0];
+            boolean isDone = parts[1].equals("1");
+            String description = parts[2];
 
-        Task t;
-        switch (type) {
-            case "T":
-                t = new Todo(description);
-                break;
-            case "D":
-                t = new Deadline(description, parts[3]);
-                break;
-            case "E":
-                t = new Event(description, parts[3], parts[4]);
-                break;
-            default:
-                return null;
+            Task t;
+            switch (type) {
+                case "T":
+                    t = new Todo(description);
+                    break;
+                case "D":
+                    LocalDateTime by = LocalDateTime.parse(parts[3]);
+                    t = new Deadline(description, by);
+                    break;
+                case "E":
+                    LocalDateTime from = LocalDateTime.parse(parts[3]);
+                    LocalDateTime to = LocalDateTime.parse(parts[4]);
+                    t = new Event(description, from, to);
+                    break;
+                default:
+                    throw new CaesarException("Unknown task type in archives");
+            }
+
+            if (isDone)
+                t.markAsDone();
+            return t;
+        } catch (DateTimeParseException | ArrayIndexOutOfBoundsException e) {
+            throw new CaesarException("The ancient scrolls are corrupted!");
         }
-
-        if (isDone)
-            t.markAsDone();
-        return t;
     }
 
 }
