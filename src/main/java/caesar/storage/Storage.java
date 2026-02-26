@@ -14,6 +14,10 @@ import caesar.task.Task;
 import caesar.task.Todo;
 import caesar.tasklist.TaskList;
 
+/**
+ * Handles the loading and saving of tasks to a local file.
+ * Encapsulates all file I/O operations for the Caesar application.
+ */
 public class Storage {
     private File file;
 
@@ -23,6 +27,13 @@ public class Storage {
         this.file = new File(filepath.toString());
     }
 
+    /**
+     * Saves the current list of tasks to the hard drive.
+     * Creates the necessary directory if it does not exist.
+     * 
+     * @param tasks The TaskList to be archived.
+     * @throws CaesarException If the file cannot be written to.
+     */
     public void save(TaskList tasks) throws CaesarException {
         try {
             // Ensure the directory exists
@@ -44,6 +55,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the local storage file.
+     * 
+     * @return A TaskList populated with tasks from the file, or an empty TaskList
+     *         if no file exists.
+     * @throws CaesarException If the file exists but is unreadable or corrupted.
+     */
     public TaskList load() throws CaesarException {
         TaskList loadedTasks = new TaskList();
 
