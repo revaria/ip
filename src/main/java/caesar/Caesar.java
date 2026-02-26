@@ -1,19 +1,18 @@
 package caesar;
 
-import caesar.ui.*;
-import caesar.parser.*;
-import caesar.exception.*;
-import caesar.storage.*;
+import caesar.ui.Ui;
+import caesar.parser.Parser;
+import caesar.exception.CaesarException;
+import caesar.storage.Storage;
 import caesar.tasklist.TaskList;
 
 public class Caesar {
+    private static Ui ui = new Ui();
+    private static TaskList myTasks;
+    private static Storage storage = new Storage();
 
     public static void main(String[] args) {
-        Ui ui = new Ui();
         ui.greet();
-        TaskList myTasks;
-
-        Storage storage = new Storage();
         try {
             myTasks = storage.load();
         } catch (CaesarException e) {
@@ -28,7 +27,7 @@ public class Caesar {
                 if (line.isBlank()) {
                     continue;
                 }
-                isRunning = Parser.handleCommand(line, myTasks, storage);
+                isRunning = Parser.handleCommand(line, myTasks, storage, ui);
             } catch (CaesarException e) {
                 System.out.println(e.getMessage());
             } catch (Exception e) {

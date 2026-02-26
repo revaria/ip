@@ -1,6 +1,7 @@
 package caesar.tasklist;
 
 import caesar.task.Task;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -37,6 +38,20 @@ public class TaskList implements Iterable<Task> {
 
     public ArrayList<Task> getAllTasks() {
         return tasks;
+    }
+
+    public TaskList findTasks(String... keywords) {
+        TaskList matches = new TaskList();
+        for (Task task : tasks) {
+            String desc = task.getDescription().toLowerCase();
+            for (String key : keywords) {
+                if (desc.contains(key.toLowerCase())) {
+                    matches.addTask(task);
+                    break;
+                }
+            }
+        }
+        return matches;
     }
 
     @Override
