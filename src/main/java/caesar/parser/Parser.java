@@ -11,7 +11,25 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Deals with making sense of the user command.
+ * Parses the raw input string and delegates the execution to the appropriate
+ * handler methods.
+ */
 public class Parser {
+
+    /**
+     * Parses the user input and executes the corresponding command.
+     * 
+     * @param line    The raw input string provided by the user.
+     * @param myTasks The TaskList containing all current tasks.
+     * @param storage The Storage object used to save changes to the hard drive.
+     * @param ui      The Ui object used to display feedback to the user.
+     * @return true if the program should continue running, false if the "bye"
+     *         command was called.
+     * @throws CaesarException If the command is unrecognized or parameters are
+     *                         invalid.
+     */
     public static boolean handleCommand(String line,
             TaskList myTasks,
             Storage storage,
@@ -26,7 +44,7 @@ public class Parser {
                 handleBye();
                 return false;
             case "list":
-                handleList(myTasks);
+                handleList(myTasks, ui);
                 break;
             case "mark":
                 handleMark(myTasks, argument);
@@ -63,16 +81,8 @@ public class Parser {
         System.out.println("Goodbye Brutus, the stars speak of our inevitable reunion.");
     }
 
-    private static void handleList(TaskList myTasks) {
-        if (myTasks.isEmpty()) {
-            System.out.println("The Caesar Files are empty!");
-            return;
-        }
-
-        System.out.println("The Caesar Files are as follows:");
-        for (int i = 0; i < myTasks.getSize(); i++) {
-            System.out.println("    " + (i + 1) + ": " + myTasks.getTask(i).toString());
-        }
+    private static void handleList(TaskList myTasks, Ui ui) {
+        ui.showTaskList(myTasks);
     }
 
     private static void handleMark(
@@ -221,7 +231,7 @@ public class Parser {
         myTasks.deleteTask(idx);
     }
 
-    public static void findTask(
+    private static void findTask(
             TaskList myTasks,
             String argument,
             Ui ui) throws CaesarException {
@@ -233,7 +243,7 @@ public class Parser {
         ui.showSearchResults(foundTasks);
     }
 
-    public static LocalDateTime parseFlexibleDate(String input) throws CaesarException {
+    private static LocalDateTime parseFlexibleDate(String input) throws CaesarException {
         String[] patterns = { "yyyy-MM-dd HHmm", "dd/MM/yyyy HHmm", "yyyy-MM-dd", "dd/MM/yyyy" };
 
         for (String pattern : patterns) {
