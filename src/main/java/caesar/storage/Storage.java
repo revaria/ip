@@ -12,8 +12,7 @@ import caesar.task.Deadline;
 import caesar.task.Event;
 import caesar.task.Task;
 import caesar.task.Todo;
-
-import java.util.ArrayList;
+import caesar.tasklist.TaskList;
 
 public class Storage {
     private File file;
@@ -24,7 +23,7 @@ public class Storage {
         this.file = new File(filepath.toString());
     }
 
-    public void save(ArrayList<Task> tasks) throws CaesarException {
+    public void save(TaskList tasks) throws CaesarException {
         try {
             // Ensure the directory exists
             File parentDir = file.getParentFile();
@@ -45,8 +44,8 @@ public class Storage {
         }
     }
 
-    public ArrayList<Task> load() throws CaesarException {
-        ArrayList<Task> loadedTasks = new ArrayList<>();
+    public TaskList load() throws CaesarException {
+        TaskList loadedTasks = new TaskList();
 
         if (!file.exists()) {
             return loadedTasks; // Return empty list if no file exists yet
@@ -57,7 +56,7 @@ public class Storage {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 // Logic to turn string back into Task objects goes here
-                loadedTasks.add(parseTaskFromLine(line));
+                loadedTasks.addTask(parseTaskFromLine(line));
             }
             scanner.close();
         } catch (IOException e) {

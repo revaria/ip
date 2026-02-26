@@ -1,25 +1,24 @@
 package caesar;
 
-import caesar.task.*;
 import caesar.ui.*;
 import caesar.parser.*;
 import caesar.exception.*;
 import caesar.storage.*;
-import java.util.ArrayList;
+import caesar.tasklist.TaskList;
 
 public class Caesar {
 
     public static void main(String[] args) {
         Ui ui = new Ui();
         ui.greet();
+        TaskList myTasks;
 
-        ArrayList<Task> myTasks;
         Storage storage = new Storage();
         try {
             myTasks = storage.load();
         } catch (CaesarException e) {
             System.out.println(e.getMessage());
-            myTasks = new ArrayList<>();
+            myTasks = new TaskList();
         }
 
         boolean isRunning = true;
