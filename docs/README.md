@@ -51,12 +51,18 @@ Caesar supports the use of **one or more** keywords:
    - Example: `find Legion march` (Returns all tasks containing 'Legion' or 'march')
 
 
+5. Close the Program
+To close the Caesar program:
+   - `bye`   
+
+
 ## FAQ
 Q: Where is my data saved?
 
 A: Caesar automatically saves your tasks in ./data/caesar.txt. **Do not edit** this file manually unless you wish to risk the wrath of the Senate!
 
 # Command Summary
+
 | Action | Command Format | Example |
 | :--- | :--- | :--- |
 | **Todo** | `todo <description>` | `todo Recruit 10th Legion` |
