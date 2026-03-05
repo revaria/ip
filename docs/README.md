@@ -6,14 +6,12 @@ Caesar is a desktop archive for the busy Roman commander, designed to help you t
 
 ## Quick Start
 
-Ensure you have Java 11 or above installed.
+Ensure you have Java 17 or above installed.
 
-Download the latest caesar.jar from here.
+Download the latest `caesar.jar` from [the Releases Page](https://github.com/revaria/ip/releases).
 
-Open a terminal, navigate to the folder, and run:
-java -jar caesar.jar
-
-The Caesar logo will appear—you are ready to begin!
+Open a terminal, navigate to the folder, and run:  
+`java -jar caesar.jar`
 
 ## Features
 
