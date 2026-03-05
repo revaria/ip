@@ -15,8 +15,9 @@ Open a terminal, navigate to the folder, and run:
 
 ## Features
 
-1. Adding Tasks
-Caesar supports <ins>three</ins> types of tasks:
+1. Adding Tasks  
+
+   Caesar supports <ins>three</ins> types of tasks:
    - Todo: A basic task without a deadline.
      - `todo <description>`
      - Example: `todo Recruit 10th Legion`
@@ -31,7 +32,8 @@ Caesar supports <ins>three</ins> types of tasks:
 
 
 2. Viewing the Archives
-To see all currently tracked tasks:
+
+   To see all currently tracked tasks:
    - `list`
 
 
@@ -45,14 +47,16 @@ To see all currently tracked tasks:
 
 
 4. Searching for Tasks
-Find tasks using keywords in their descriptions.  
-Caesar supports the use of **one or more** keywords:
+
+   Find tasks using keywords in their descriptions.    
+   Caesar supports the use of **one or more** keywords:
    - `find <keyword> ... <keyword>`
    - Example: `find Legion march` (Returns all tasks containing 'Legion' or 'march')
 
 
-5. Close the Program
-To close the Caesar program:
+5. Exit Caesar
+
+   To close the program:
    - `bye`   
 
 
